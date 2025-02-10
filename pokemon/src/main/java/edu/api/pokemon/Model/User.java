@@ -23,23 +23,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Table(name="user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class User implements UserDetails {
+    
     @Id
     @GeneratedValue
     Integer id;
+
     @Basic
     @Column(nullable = false)
     String username;
+
     @Column(nullable = false)
     String lastname;
+
     String firstname;
+    
     String country;
+
     String password;
+
     @Enumerated(EnumType.STRING) 
     Role role;
 
