@@ -6,11 +6,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import edu.api.pokemon.Auth.AuthResponse;
-import edu.api.pokemon.Auth.LoginRequest;
-import edu.api.pokemon.Auth.RegisterRequest;
 import edu.api.pokemon.Enums.Role;
 import edu.api.pokemon.Model.User;
+import edu.api.pokemon.Model.Request.LoginRequest;
+import edu.api.pokemon.Model.Request.RegisterRequest;
+import edu.api.pokemon.Model.Response.AuthResponse;
 import edu.api.pokemon.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 

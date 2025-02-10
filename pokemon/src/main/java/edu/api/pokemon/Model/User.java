@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import edu.api.pokemon.Enums.Role;
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,6 +17,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +48,13 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pokemon> pokemons;
+
+    public boolean hasPokemonsWithNickname(String nickname) {
+        return this.pokemons.stream().anyMatch(p -> p.getNickname().equalsIgnoreCase(nickname));
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

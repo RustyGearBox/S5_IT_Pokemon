@@ -1,4 +1,4 @@
-package edu.api.pokemon.Auth;
+package edu.api.pokemon.Model.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

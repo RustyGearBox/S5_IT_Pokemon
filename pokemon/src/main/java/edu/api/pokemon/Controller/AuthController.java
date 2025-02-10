@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.api.pokemon.Auth.AuthResponse;
-import edu.api.pokemon.Auth.LoginRequest;
-import edu.api.pokemon.Auth.RegisterRequest;
+import edu.api.pokemon.Model.Request.LoginRequest;
+import edu.api.pokemon.Model.Request.RegisterRequest;
+import edu.api.pokemon.Model.Response.AuthResponse;
 import edu.api.pokemon.Service.AuthService;
 import lombok.RequiredArgsConstructor;
 
