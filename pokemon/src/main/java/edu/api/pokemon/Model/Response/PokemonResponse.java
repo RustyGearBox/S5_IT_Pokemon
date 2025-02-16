@@ -1,5 +1,6 @@
 package edu.api.pokemon.Model.Response;
 
+import edu.api.pokemon.Enums.PokemonRooms;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,6 @@ public class PokemonResponse {
     private int experience;
     private int happiness;
     private int health;
-    private String room;
+    private PokemonRooms room;
 
 }

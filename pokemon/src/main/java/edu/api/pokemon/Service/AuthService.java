@@ -2,11 +2,13 @@ package edu.api.pokemon.Service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import edu.api.pokemon.Enums.Role;
+import edu.api.pokemon.Exception.Custom.UserNotFoundException;
 import edu.api.pokemon.Model.User;
 import edu.api.pokemon.Model.Request.LoginRequest;
 import edu.api.pokemon.Model.Request.RegisterRequest;
@@ -45,6 +47,16 @@ public class AuthService {
         return AuthResponse.builder()
             .token(jwtService.getToken(user))
             .build();   
+    }
+
+    public User getAuthenticatedUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+    }
+
+    public boolean isAdmin(User user) {
+        return user.getRole() == Role.ADMIN;
     }
 
 }

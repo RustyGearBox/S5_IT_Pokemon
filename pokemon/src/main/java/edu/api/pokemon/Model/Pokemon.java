@@ -3,6 +3,7 @@ package edu.api.pokemon.Model;
 import java.time.LocalDateTime;
 
 import edu.api.pokemon.Enums.PokemonRooms;
+import edu.api.pokemon.Service.AuthService;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -64,4 +65,9 @@ public class Pokemon {
     @Column(name = "sleep_end_time")
     private LocalDateTime sleepEndTime;
 
+    public void verifyAdminOrOwner(User user, AuthService authService) {
+        if (!authService.isAdmin(user) && !this.user.equals(user)) {
+            throw new SecurityException("Unauthorized to access this pet.");
+        }
+    }
 }
