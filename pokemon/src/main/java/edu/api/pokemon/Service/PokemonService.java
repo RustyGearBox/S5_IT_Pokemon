@@ -1,5 +1,7 @@
 package edu.api.pokemon.Service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import edu.api.pokemon.Model.User;
 import edu.api.pokemon.Model.Request.PokemonFindRequest;
 import edu.api.pokemon.Model.Request.PokemonRequest;
 import edu.api.pokemon.Model.Response.PokemonResponse;
+import edu.api.pokemon.Model.Response.UserPokemonResponse;
 import edu.api.pokemon.Repository.PokemonRepository;
 import edu.api.pokemon.Service.Interface.IPokemonService;
 import lombok.RequiredArgsConstructor;
@@ -31,27 +34,11 @@ public class PokemonService implements IPokemonService {
             throw new PokemonNameExistException(request.getNickname());
         }
 
-        Pokemon pokemon = Pokemon.builder()
-            .name(request.getName())
-            .nickname(request.getNickname())
-            .user(user)
-            .health(100)
-            .happiness(50)
-            .experience(0)
-            .room(PokemonRooms.LIVING_ROOM)
-            .build();
+        PokemonMapper pokemonMapper = new PokemonMapper();
+        Pokemon pokemon = pokemonMapper.toEntity(request, user, PokemonRooms.LIVING_ROOM);
 
         Pokemon savedPokemon = pokemonRepository.save(pokemon);
-
-        PokemonResponse pokemonResponse = PokemonResponse.builder()
-            .id(savedPokemon.getId())
-            .name(savedPokemon.getName())
-            .nickname(savedPokemon.getNickname())
-            .health(savedPokemon.getHealth())
-            .happiness(savedPokemon.getHappiness())
-            .experience(savedPokemon.getExperience())
-            .room(savedPokemon.getRoom())
-            .build();
+        PokemonResponse pokemonResponse = pokemonMapper.toResponse(savedPokemon);
 
         return pokemonResponse;
     }
@@ -74,8 +61,14 @@ public class PokemonService implements IPokemonService {
         return pokemonsPage.map(pokemonMapper::toResponse);
     }
     
-    public Page<PokemonResponse> getAllPokemons(Pageable pageable) {
-        return null;
+    public Page<UserPokemonResponse> getAllPokemons(Pageable pageable) {
+        if (!authService.isAdmin(authService.getAuthenticatedUser())) {
+            throw new SecurityException("Unauthorized to access all pets.");
+        }
+
+        Page<Pokemon> pokemonPage = pokemonRepository.findAll(pageable);
+        PokemonMapper pokemonMapper = new PokemonMapper();
+        return pokemonPage.map(pokemon -> new UserPokemonResponse(pokemon.getUser().getId(), pokemon.getUser().getUsername(), List.of(pokemonMapper.toResponse(pokemon))));
     }
     
 }

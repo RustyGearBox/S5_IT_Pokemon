@@ -7,6 +7,7 @@ import edu.api.pokemon.Model.Pokemon;
 import edu.api.pokemon.Model.Request.PokemonFindRequest;
 import edu.api.pokemon.Model.Request.PokemonRequest;
 import edu.api.pokemon.Model.Response.PokemonResponse;
+import edu.api.pokemon.Model.Response.UserPokemonResponse;
 
 public interface IPokemonService {
     
@@ -14,6 +15,6 @@ public interface IPokemonService {
     Pokemon getPokemonById(int id);
     void deletePokemon(PokemonFindRequest pokemonFindRequest);
     Page<PokemonResponse> getUserPokemons(Pageable pageable);
-    Page<PokemonResponse> getAllPokemons(Pageable pageable);
+    Page<UserPokemonResponse> getAllPokemons(Pageable pageable);
     
 }
