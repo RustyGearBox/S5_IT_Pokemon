@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class PokemonService implements IPokemonService {
     
     private final AuthService authService;
+    private final PokemonMapper pokemonMapper;
     private final PokemonRepository pokemonRepository;
 
     public PokemonResponse createPokemon(PokemonRequest request) {
@@ -34,13 +35,10 @@ public class PokemonService implements IPokemonService {
             throw new PokemonNameExistException(request.getNickname());
         }
 
-        PokemonMapper pokemonMapper = new PokemonMapper();
         Pokemon pokemon = pokemonMapper.toEntity(request, user, PokemonRooms.LIVING_ROOM);
-
         Pokemon savedPokemon = pokemonRepository.save(pokemon);
-        PokemonResponse pokemonResponse = pokemonMapper.toResponse(savedPokemon);
 
-        return pokemonResponse;
+        return pokemonMapper.toResponse(savedPokemon);
     }
     
     public Pokemon getPokemonById(int id) {
@@ -54,20 +52,24 @@ public class PokemonService implements IPokemonService {
         pokemonRepository.delete(pokemon);
     }
     
+    public PokemonResponse getPokemon (int id) {
+        Pokemon pokemon = getPokemonById(id);
+        pokemon.verifyAdminOrOwner(authService.getAuthenticatedUser(), authService);
+        return pokemonMapper.toResponse(pokemon);
+    }
+
     public Page<PokemonResponse> getUserPokemons(Pageable pageable) {
         User user = authService.getAuthenticatedUser();
         Page<Pokemon> pokemonsPage = pokemonRepository.findByUser(user, pageable);
-        PokemonMapper pokemonMapper = new PokemonMapper();
         return pokemonsPage.map(pokemonMapper::toResponse);
     }
     
     public Page<UserPokemonResponse> getAllPokemons(Pageable pageable) {
         if (!authService.isAdmin(authService.getAuthenticatedUser())) {
-            throw new SecurityException("Unauthorized to access all pets.");
+            throw new SecurityException("Unauthorized to access all pokemons.");
         }
 
         Page<Pokemon> pokemonPage = pokemonRepository.findAll(pageable);
-        PokemonMapper pokemonMapper = new PokemonMapper();
         return pokemonPage.map(pokemon -> new UserPokemonResponse(pokemon.getUser().getId(), pokemon.getUser().getUsername(), List.of(pokemonMapper.toResponse(pokemon))));
     }
     
