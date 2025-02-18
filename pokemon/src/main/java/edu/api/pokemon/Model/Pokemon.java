@@ -70,4 +70,23 @@ public class Pokemon {
             throw new SecurityException("Unauthorized to access this pet.");
         }
     }
+
+    public void feed(Pokemon pokemon) {
+        pokemon.setHealth(health + 20);
+        pokemon.setHappiness(happiness + 10);
+    }
+
+    public void play(Pokemon pokemon) {
+        pokemon.setHappiness(happiness + 20);
+    }
+
+    public void customize(Pokemon pokemon) {
+        pokemon.setHappiness(happiness + 10);
+    }
+
+    public void sleep(Pokemon pokemon) {
+        pokemon.setSleeping(true);
+        pokemon.setSleepEndTime(LocalDateTime.now().plusHours(8));
+    }
+
 }

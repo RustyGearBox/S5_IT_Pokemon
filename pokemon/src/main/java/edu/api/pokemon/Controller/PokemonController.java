@@ -9,6 +9,7 @@ import edu.api.pokemon.Model.Request.PokemonRequest;
 import edu.api.pokemon.Model.Response.PokemonResponse;
 import edu.api.pokemon.Model.Response.UserPokemonResponse;
 import edu.api.pokemon.Service.PokemonService;
+import edu.api.pokemon.Service.UpdateService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Sort;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class PokemonController {
     
     private final PokemonService pokemonService;
+    private final UpdateService updateService;
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
@@ -68,7 +70,7 @@ public class PokemonController {
 
     @PostMapping("/action")
     public ResponseEntity<PokemonResponse> updatePokemon(@RequestBody PokemonRequest pokemonRequest, @RequestParam PokemonActions action) {
-        PokemonResponse pokemonResponse = updateService.actionPokemon(pokemonRequest, action);
+        PokemonResponse pokemonResponse = updateService.updatePokemon(pokemonRequest, action);
         return new ResponseEntity<>(pokemonResponse, HttpStatus.OK);
     }
     
