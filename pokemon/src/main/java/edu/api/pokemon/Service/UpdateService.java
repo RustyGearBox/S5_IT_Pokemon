@@ -9,16 +9,18 @@ import edu.api.pokemon.Model.User;
 import edu.api.pokemon.Model.Request.PokemonRequest;
 import edu.api.pokemon.Model.Response.PokemonResponse;
 import edu.api.pokemon.Repository.PokemonRepository;
+import edu.api.pokemon.Service.Interface.IUpdateService;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UpdateService {
+public class UpdateService implements IUpdateService {
     
     private final AuthService authService;
     private final PokemonMapper pokemonMapper;
     private final PokemonRepository pokemonRepository;
 
+    @Override
     public PokemonResponse updatePokemon (PokemonRequest pokemonRequest, PokemonActions action){
         Pokemon pokemon = verifyOwner(pokemonRequest.getUserId());
         switch (action) {
@@ -31,10 +33,10 @@ public class UpdateService {
 
         Pokemon savedPokemon = pokemonRepository.save(pokemon);
         return pokemonMapper.toResponse(savedPokemon);
-
     }
 
-    private Pokemon verifyOwner(int id) {
+    @Override
+    public Pokemon verifyOwner(int id) {
         User user = authService.getAuthenticatedUser();
         Pokemon pokemon = pokemonRepository.findById(id)
                 .orElseThrow(() -> new PokemonNotFoundException("Pokemon not found with ID: " + id));
@@ -42,7 +44,5 @@ public class UpdateService {
         pokemon.verifyAdminOrOwner(user, authService);
         return pokemon;
     }
-
-    
 
 }
