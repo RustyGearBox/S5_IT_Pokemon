@@ -1,7 +1,5 @@
 package edu.api.pokemon.Model;
 
-import java.time.LocalDateTime;
-
 import edu.api.pokemon.Enums.PokemonRooms;
 import edu.api.pokemon.Service.AuthService;
 import jakarta.persistence.Column;
@@ -62,9 +60,6 @@ public class Pokemon {
     @Column(name = "is_sleeping", nullable = false)
     private boolean sleeping = false;
 
-    @Column(name = "sleep_end_time")
-    private LocalDateTime sleepEndTime;
-
     public void verifyAdminOrOwner(User user, AuthService authService) {
         if (!authService.isAdmin(user) && !this.user.equals(user)) {
             throw new SecurityException("Unauthorized to access this pet.");
@@ -72,21 +67,24 @@ public class Pokemon {
     }
 
     public void feed(Pokemon pokemon) {
-        pokemon.setHealth(health + 20);
-        pokemon.setHappiness(happiness + 10);
+        pokemon.setHealth(Math.min(pokemon.getHealth() + 20, 100));
+        pokemon.setHappiness(Math.min(pokemon.getHappiness() + 10, 100));
     }
 
     public void play(Pokemon pokemon) {
-        pokemon.setHappiness(happiness + 20);
+        pokemon.setHealth(Math.min(pokemon.getHealth() - 10, 100));
+        pokemon.setHappiness(Math.min(pokemon.getHappiness() + 20, 100));
     }
 
     public void customize(Pokemon pokemon) {
-        pokemon.setHappiness(happiness + 10);
+        pokemon.setHappiness(Math.min(pokemon.getHappiness() - 30, 100));
     }
 
     public void sleep(Pokemon pokemon) {
         pokemon.setSleeping(true);
-        pokemon.setSleepEndTime(LocalDateTime.now().plusHours(8));
     }
 
+    public void wakeUp(Pokemon pokemon) {
+        pokemon.setSleeping(false);
+    }
 }
