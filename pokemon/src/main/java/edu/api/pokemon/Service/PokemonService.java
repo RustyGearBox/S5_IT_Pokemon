@@ -35,7 +35,7 @@ public class PokemonService implements IPokemonService {
             throw new PokemonNameExistException(request.getNickname());
         }
 
-        Pokemon pokemon = pokemonMapper.toEntity(request, user, PokemonRooms.LIVING_ROOM);
+        Pokemon pokemon = pokemonMapper.toEntity(request, user, PokemonRooms.BEDROOM);
         Pokemon savedPokemon = pokemonRepository.save(pokemon);
 
         return pokemonMapper.toResponse(savedPokemon);
