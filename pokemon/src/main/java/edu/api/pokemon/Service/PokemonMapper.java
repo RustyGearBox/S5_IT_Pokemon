@@ -19,7 +19,7 @@ public class PokemonMapper {
             .health(100)
             .happiness(50)
             .experience(0)
-            .room(PokemonRooms.BEDROOM)
+            .room(rooms)
             .build();
     }
 

@@ -50,9 +50,17 @@ public class PokemonController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<PokemonResponse> getPokemon(@PathVariable int id) {
-        PokemonResponse pokemonResponse = pokemonService.getPokemon(id);
-        return new ResponseEntity<>(pokemonResponse, HttpStatus.OK);
+    public ResponseEntity<?> getPokemon(@PathVariable("id") int id) { // Add explicit name "id"
+        try {
+            PokemonResponse pokemonResponse = pokemonService.getPokemon(id);
+            if (pokemonResponse == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pokémon not found.");
+            }
+            return ResponseEntity.ok(pokemonResponse);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Error fetching Pokémon: " + e.getMessage());
+        }
     }
 
     @GetMapping("/all")
