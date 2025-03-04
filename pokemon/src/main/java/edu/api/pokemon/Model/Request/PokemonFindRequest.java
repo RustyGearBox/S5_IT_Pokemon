@@ -1,4 +1,4 @@
-package edu.api.pokemon.Auth;
+package edu.api.pokemon.Model.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class LoginRequest {
+@AllArgsConstructor
+public class PokemonFindRequest {
     
-    String username;
-    String password; 
-    
+    private int id;
+
 }

@@ -1,4 +1,4 @@
-package edu.api.pokemon.Auth;
+package edu.api.pokemon.Model.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,14 +7,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class RegisterRequest {
+@NoArgsConstructor
+public class LoginRequest {
     
     String username;
-    String password;
-    String firstname;
-    String lastname;
-    String country; 
+    String password; 
     
 }

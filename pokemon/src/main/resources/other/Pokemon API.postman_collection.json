@@ -1,0 +1,258 @@
+{
+	"info": {
+		"_postman_id": "cfa6e6d9-bbb6-46d4-8ca0-af61742fbd4e",
+		"name": "Pokemon API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41327734"
+	},
+	"item": [
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"RustyGearBox\",\r\n    \"password\": \"1q2w3e4r\",\r\n    \"email\": \"rustygearbox@example.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/auth/register",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"GearBox\",\r\n    \"password\": \"1q2w3e4r\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVER}}/auth/login",
+							"host": [
+								"{{SERVER}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POKEMON",
+			"item": [
+				{
+					"name": "USER",
+					"item": [
+						{
+							"name": "Create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHZWFyQm94IiwiaWF0IjoxNzM5OTY3NDU4LCJleHAiOjE3Mzk5Njg4OTh9.ODkJEFw7e1KnsKFU_M7PcMfkHah7ShZOVcSwqoibuKg",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Garchop\",\r\n    \"nickname\": \"Shark\",\r\n    \"userId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERVER}}/pokemon",
+									"host": [
+										"{{SERVER}}"
+									],
+									"path": [
+										"pokemon"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHZWFyQm94IiwiaWF0IjoxNzQwMDQ0MjUwLCJleHAiOjE3NDAwNDU2OTB9.mJEiJz_zj619-NnigbLTmqEpxcA-KQl9Rju8l_OaZHU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERVER}}/pokemon",
+									"host": [
+										"{{SERVER}}"
+									],
+									"path": [
+										"pokemon"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetOne",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHZWFyQm94IiwiaWF0IjoxNzQwMDQ1OTg4LCJleHAiOjE3NDAwNDc0Mjh9.q2m4m0j0Bvl96aeDJzCU4LCjpXdnVfNEfZmDQrCvP_I",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERVER}}/pokemon/all",
+									"host": [
+										"{{SERVER}}"
+									],
+									"path": [
+										"pokemon",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Action",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJHZWFyQm94IiwiaWF0IjoxNzQwMDUxODQ0LCJleHAiOjE3NDAwNTMyODR9.uKw7kiINu8UlD6Acgpx1f2LqnK1r_S-ZqAR_5oUtquI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Gardevoir\",\r\n    \"nickname\": \"Nurita\",\r\n    \"action\": \"PLAY\",\r\n    \"pokemonId\": 3,\r\n    \"userId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{SERVER}}/pokemon/action",
+									"host": [
+										"{{SERVER}}"
+									],
+									"path": [
+										"pokemon",
+										"action"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ADMIN",
+					"item": [
+						{
+							"name": "GetAll",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJSdXN0eUdlYXJCb3giLCJpYXQiOjE3NDAwNDUzMTIsImV4cCI6MTc0MDA0Njc1Mn0.Q9vCPM8NVbB11zlsmN7QTDzR-PLvLqM6ZvReNlkM9yw",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{SERVER}}/pokemon/admin/all",
+									"host": [
+										"{{SERVER}}"
+									],
+									"path": [
+										"pokemon",
+										"admin",
+										"all"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
