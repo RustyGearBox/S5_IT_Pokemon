@@ -13,8 +13,7 @@ public interface IPokemonService {
     
     PokemonResponse createPokemon(PokemonRequest request);
     Pokemon getPokemonById(int id);
-    void deletePokemon(PokemonFindRequest pokemonFindRequest);
-    Page<PokemonResponse> getUserPokemons(Pageable pageable);
+    void deletePokemon(PokemonFindRequest request, String username);
     Page<UserPokemonResponse> getAllPokemons(Pageable pageable);
     
 }

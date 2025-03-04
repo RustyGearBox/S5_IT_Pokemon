@@ -78,6 +78,12 @@ public class Pokemon {
 
     public void customize(Pokemon pokemon) {
         pokemon.setHappiness(Math.min(pokemon.getHappiness() - 30, 100));
+        if (pokemon.getRoom()==PokemonRooms.BEDROOM) {
+            pokemon.setRoom(PokemonRooms.GARDEN);
+        } else {
+            pokemon.setRoom(PokemonRooms.BEDROOM);     
+        }
+    
     }
 
     public void sleep(Pokemon pokemon) {

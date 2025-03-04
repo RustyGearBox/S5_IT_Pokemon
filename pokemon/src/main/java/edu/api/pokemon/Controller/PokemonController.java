@@ -7,7 +7,6 @@ import edu.api.pokemon.Model.Request.PokemonActionRequest;
 import edu.api.pokemon.Model.Request.PokemonFindRequest;
 import edu.api.pokemon.Model.Request.PokemonRequest;
 import edu.api.pokemon.Model.Response.PokemonResponse;
-import edu.api.pokemon.Model.Response.UserPokemonResponse;
 import edu.api.pokemon.Service.PokemonService;
 import edu.api.pokemon.Service.UpdateService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/pokemon")
 @RequiredArgsConstructor
@@ -39,11 +40,11 @@ public class PokemonController {
         PokemonResponse pokemonResponse = pokemonService.createPokemon(pokemonRequest);
         return new ResponseEntity<>(pokemonResponse, HttpStatus.CREATED);
     }
-    
+
     @DeleteMapping
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Void> deletePokemon(@RequestBody PokemonFindRequest findRequest) {
-        pokemonService.deletePokemon(findRequest);
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Void> deletePokemon(@RequestBody PokemonFindRequest findRequest, Principal principal) {
+        pokemonService.deletePokemon(findRequest, principal.getName());
         return ResponseEntity.noContent().build();
     }
 
@@ -55,15 +56,13 @@ public class PokemonController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Page<PokemonResponse>> getUserPokemons(@PageableDefault(page = 0, size = 5, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.ok(pokemonService.getUserPokemons(pageable));
-    }
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<Page<PokemonResponse>> getPokemons(
+        @PageableDefault(page = 0, size = 5, sort = "name", direction = Sort.Direction.ASC) Pageable pageable,
+        Principal principal) {
 
-    @GetMapping("/admin/all")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<UserPokemonResponse>> getAllPokemons(@PageableDefault(page = 0, size = 5, sort = "user", direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.ok(pokemonService.getAllPokemons(pageable));
+        Page<PokemonResponse> pokemons = pokemonService.getPokemons(pageable, principal.getName());
+        return ResponseEntity.ok(pokemons);
     }
 
     @PostMapping("/action")
@@ -72,5 +71,4 @@ public class PokemonController {
         PokemonResponse pokemonResponse = updateService.updatePokemon(pokemonActionRequest);
         return new ResponseEntity<>(pokemonResponse, HttpStatus.OK);
     }
-    
 }
