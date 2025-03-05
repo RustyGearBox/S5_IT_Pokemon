@@ -3,6 +3,7 @@ package edu.api.pokemon.Service;
 import org.springframework.stereotype.Service;
 
 import edu.api.pokemon.Enums.PokemonActions;
+import edu.api.pokemon.Enums.PokemonRooms;
 import edu.api.pokemon.Exception.Custom.PokemonNotFoundException;
 import edu.api.pokemon.Model.Pokemon;
 import edu.api.pokemon.Model.User;
@@ -25,10 +26,10 @@ public class UpdateService implements IUpdateService {
         Pokemon pokemon = verifyOwner(pokemonActionRequest);
         PokemonActions action = pokemonActionRequest.getAction();
         switch (action) {
-            case FEED -> pokemon.feed(pokemon);
-            case PLAY -> pokemon.play(pokemon);
-            case CUSTOMIZE -> pokemon.customize(pokemon);
-            case SLEEP -> pokemon.sleep(pokemon);
+            case FEED -> feed(pokemon);
+            case PLAY -> play(pokemon);
+            case CUSTOMIZE -> customize(pokemon);
+            case SLEEP -> sleep(pokemon);
             default -> throw new PokemonNotFoundException("Invalid action: " + action);
     }
 
@@ -45,6 +46,29 @@ public class UpdateService implements IUpdateService {
 
         pokemon.verifyAdminOrOwner(user, authService);
         return pokemon;
+    }
+
+        public void feed(Pokemon pokemon) {
+        pokemon.setHealth(Math.min(pokemon.getHealth() + 20, 100));
+        pokemon.setHappiness(Math.min(pokemon.getHappiness() + 10, 100));
+    }
+
+    public void play(Pokemon pokemon) {
+        pokemon.setHealth(Math.min(pokemon.getHealth() - 10, 100));
+        pokemon.setHappiness(Math.min(pokemon.getHappiness() + 20, 100));
+    }
+
+    public void sleep(Pokemon pokemon) {
+        pokemon.setHealth(Math.min(pokemon.getHealth() + 100, 100));
+    }
+
+    public void customize(Pokemon pokemon) {
+        pokemon.setHappiness(Math.min(pokemon.getHappiness() - 50, 100));
+        if (pokemon.getRoom() == PokemonRooms.BEDROOM) {
+            pokemon.setRoom(PokemonRooms.GARDEN);
+        } else {
+            pokemon.setRoom(PokemonRooms.BEDROOM);     
+        }
     }
 
 }

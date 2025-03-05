@@ -65,28 +65,5 @@ public class Pokemon {
             throw new SecurityException("Unauthorized to access this pet.");
         }
     }
-
-    public void feed(Pokemon pokemon) {
-        pokemon.setHealth(Math.min(pokemon.getHealth() + 20, 100));
-        pokemon.setHappiness(Math.min(pokemon.getHappiness() + 10, 100));
-    }
-
-    public void play(Pokemon pokemon) {
-        pokemon.setHealth(Math.min(pokemon.getHealth() - 10, 100));
-        pokemon.setHappiness(Math.min(pokemon.getHappiness() + 20, 100));
-    }
-
-    public void sleep(Pokemon pokemon) {
-        pokemon.setHealth(Math.min(pokemon.getHealth() + 100, 100));
-    }
-
-    public void customize(Pokemon pokemon) {
-        pokemon.setHappiness(Math.min(pokemon.getHappiness() - 50, 100));
-        if (pokemon.getRoom() == PokemonRooms.BEDROOM) {
-            pokemon.setRoom(PokemonRooms.GARDEN);
-        } else {
-            pokemon.setRoom(PokemonRooms.BEDROOM);     
-        }
-    }
-
+    
 }
